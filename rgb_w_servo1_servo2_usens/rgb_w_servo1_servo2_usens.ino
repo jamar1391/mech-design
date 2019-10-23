@@ -27,6 +27,7 @@ void setup(void) {
   delay(2000);
   myservo.write(0);
   delay(2000);
+}
 
 void loop(void) {
   uint16_t r, g, b, c, colorTemp, lux;
@@ -39,15 +40,15 @@ void loop(void) {
       colorTemp = tcs.calculateColorTemperature_dn40(r, g, b, c);
       lux = tcs.calculateLux(r, g, b);
 
-      if ((colorTemp < 3500) && (c > 50)) {
+      if ((colorTemp < 3500) && (c > 35)) {
         myservo.write(0);
         }
         
-      else if ((colorTemp > 4300) && (colorTemp < 5300) && (c > 50)) {
+      else if ((colorTemp > 4300) && (colorTemp < 5300) && (c > 35)) {
         myservo.write(90);
         }
         
-      else if ((colorTemp > 6800) && (colorTemp < 9100) && (c > 50)) {
+      else if ((colorTemp > 6800) && (colorTemp < 9100) && (c > 35)) {
         myservo.write(178);
         }
         
