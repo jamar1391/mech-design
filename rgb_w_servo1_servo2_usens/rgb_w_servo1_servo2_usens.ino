@@ -52,7 +52,7 @@ void loop(void) {
         myservo.write(178);
         }
         
-      delay(50);
+      delay(20);
     };
   delay(((avtime/2)-200));
   carriage.write(135);
