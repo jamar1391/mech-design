@@ -9,7 +9,7 @@ Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 Servo myservo;
 Servo carriage;
 int avtime=1000;
-int RECV_PIN = 5;          //  The digital pin that the signal pin of the sensor is connected to
+int RECV_PIN = 8;          //  The digital pin that the signal pin of the sensor is connected to
 IRrecv receiver(RECV_PIN);  //  Create a new receiver object that would decode signals to key codes
 decode_results results;  
 
@@ -22,40 +22,44 @@ void setup(void) {
   receiver.enableIRIn();
   myservo.attach(9);
   carriage.attach(10);
-  myservo.write(178);
-  carriage.write(178);
+  myservo.write(60);
+  carriage.write(155);
   delay(2000);
-  myservo.write(0);
-  delay(2000);
+//  myservo.write(0);
+//  delay(2000);
+  while (receiver.decode(&results)==0) {}
+  
 }
 
 void loop(void) {
   uint16_t r, g, b, c, colorTemp, lux;
 
-  carriage.write(45);
+  carriage.write(155);
 
-  for (int i = 0; i <= 3; i++){
+  for (int i = 0; i < 2; i++){
       tcs.getRawData(&r, &g, &b, &c);
       // colorTemp = tcs.calculateColorTemperature(r, g, b);
       colorTemp = tcs.calculateColorTemperature_dn40(r, g, b, c);
       lux = tcs.calculateLux(r, g, b);
 
       if ((colorTemp < 3500) && (c > 35)) {
-        myservo.write(0);
+        myservo.write(45);
         }
         
       else if ((colorTemp > 4300) && (colorTemp < 5300) && (c > 35)) {
-        myservo.write(90);
+        myservo.write(60);
         }
         
       else if ((colorTemp > 6800) && (colorTemp < 9100) && (c > 35)) {
-        myservo.write(178);
+        myservo.write(75);
         }
-        
+
+      Serial.println(colorTemp);
+      
       delay(20);
     };
-  delay(((avtime/2)-200));
-  carriage.write(135);
-  delay((avtime/2));
+  delay(700);
+  carriage.write(110);
+  delay(300);
 
 }
