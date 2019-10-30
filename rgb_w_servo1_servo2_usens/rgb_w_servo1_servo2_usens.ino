@@ -22,8 +22,8 @@ void setup(void) {
   receiver.enableIRIn();
   myservo.attach(9);
   carriage.attach(10);
-  myservo.write(60);
-  carriage.write(155);
+  myservo.write(155);
+  carriage.write(135);
   delay(2000);
 //  myservo.write(0);
 //  delay(2000);
@@ -34,31 +34,34 @@ void setup(void) {
 void loop(void) {
   uint16_t r, g, b, c, colorTemp, lux;
 
-  carriage.write(155);
+  carriage.write(135);
 
-  for (int i = 0; i < 2; i++){
+  delay(130);
+  for (int i = 0; i < 10; i++){
       tcs.getRawData(&r, &g, &b, &c);
       // colorTemp = tcs.calculateColorTemperature(r, g, b);
       colorTemp = tcs.calculateColorTemperature_dn40(r, g, b, c);
       lux = tcs.calculateLux(r, g, b);
 
       if ((colorTemp < 3500) && (c > 35)) {
-        myservo.write(45);
+        myservo.write(185);
         }
         
-      else if ((colorTemp > 4300) && (colorTemp < 5300) && (c > 35)) {
-        myservo.write(60);
+      else if ((colorTemp > 4300) && (colorTemp < 6000) && (c > 35)) {
+        myservo.write(155);
         }
         
       else if ((colorTemp > 6800) && (colorTemp < 9100) && (c > 35)) {
-        myservo.write(75);
+        myservo.write(120);
         }
 
-      Serial.println(colorTemp);
+//      Serial.print("Color Temp: ");Serial.print(colorTemp,DEC);
+//      Serial.print("C: ");Serial.print(c,DEC);
+//      Serial.println(" ");
       
-      delay(20);
-    };
-  delay(700);
+//      delay(20);
+    }; 
+  delay(400);
   carriage.write(110);
   delay(300);
 
