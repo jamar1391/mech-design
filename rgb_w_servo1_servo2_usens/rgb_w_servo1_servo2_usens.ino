@@ -34,7 +34,7 @@ void setup(void) {
 void loop(void) {
   uint16_t r, g, b, c, colorTemp, lux;
 
-  carriage.write(135);
+  carriage.write(138);
 
   delay(130);
   for (int i = 0; i < 10; i++){
@@ -61,7 +61,7 @@ void loop(void) {
       
 //      delay(20);
     }; 
-  delay(400);
+  delay(500);
   carriage.write(110);
   delay(300);
 
