@@ -8,7 +8,7 @@
 Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 Servo myservo;
 Servo carriage;
-int avtime=1000;
+int dly = 0;        // A variable to store the delay chosen in setup
 int RECV_PIN = 8;          //  The digital pin that the signal pin of the sensor is connected to
 IRrecv receiver(RECV_PIN);  //  Create a new receiver object that would decode signals to key codes
 decode_results results;  
@@ -27,9 +27,49 @@ void setup(void) {
   delay(2000);
 //  myservo.write(0);
 //  delay(2000);
-  while (receiver.decode(&results)==0) {}
+    while (1) {
+    if (receiver.decode(&results)) {
+      Serial.println(results.value, HEX);
+      if (results.value==0xFF4AB5) {
+        Serial.println("Number 8");
+        break;
+        }
+      if (results.value==0xFF52AD) {
+        Serial.println("Number 9");
+        dly = 100;
+        break;
+        }
+      if (results.value==0xFF6897) {
+        Serial.println("Number 0");
+        dly = 200;
+        break;
+        }
+      if (results.value==0xFF30CF) {
+        Serial.println("Number 1");
+        dly = 300;
+        break;
+        }
+      if (results.value==0xFF18E7) {
+        Serial.println("Number 2");
+        dly = 400;
+        break;
+        }
+        
+//      receiver.resume();
+      }
+    }
+    receiver.resume();
+
+    while (1) {
+    if (receiver.decode(&results)) {
+      Serial.println(results.value, HEX);
+      if (results.value==0xFF02FD) {
+        Serial.println("Begin");
+        break;
+        }
+      }
   
-}
+}}
 
 void loop(void) {
   uint16_t r, g, b, c, colorTemp, lux;
@@ -61,7 +101,8 @@ void loop(void) {
       
 //      delay(20);
     }; 
-  delay(500);
+  delay(400);
+  delay(dly);
   carriage.write(110);
   delay(300);
 
